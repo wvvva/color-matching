@@ -1,6 +1,11 @@
+import {initJsPsych} from '../jspsych/dist/jspsych';
+import jsPsychHtmlKeyboardResponse from '../jspsych/disk/plugin-html-keyboard-response';
+
 const jsPsych = initJsPsych();
 
-const hello_trial = {
+const trial = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: 'Hello world!'
-  }
+    stimulus: 'Hello world!',
+}
+
+jsPsych.run([trial]);
