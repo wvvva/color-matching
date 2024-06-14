@@ -323,16 +323,19 @@
 }
 
 .jspsych-content-wrapper {
-  display: flex;
-  margin: auto;
+  display: block;
+  margin: 2% 5% 2% 5%;
   flex: 1 1 100%;
-  width: 100%;
+  flex-wrap: wrap;
+  /* alig */
+  align-content: center;
 }
 
 .jspsych-content {
   max-width: 95%; /* this is mainly an IE 10-11 fix */
   text-align: center;
-  margin: auto; /* this is for overflowing content */
+  margin: 0%; /* this is for overflowing content */
+  align-self: center;
 }
 
 .jspsych-top {
@@ -372,26 +375,28 @@
   background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
-  color: #333;
-  background-color: #fff;
+  color: rgb(255, 255, 255);
+  background-color: #87B9D5;
   border-color: #ccc;
 }
 
 /* only apply the hover style on devices with a mouse/pointer that can hover - issue #977 */
 @media (hover: hover) {
   .jspsych-btn:hover {
-    background-color: #ddd;
+    background-color: #87B9D5;
     border-color: #aaa;
+    color: rgb(255, 255, 255);
   }
 }
 .jspsych-btn:active {
-  background-color: #ddd;
+  background-color: #87B9D5;
   border-color: #000000;
+  color: rgb(255, 255, 255);
 }
 
 .jspsych-btn:disabled {
-  background-color: #eee;
-  color: #aaa;
+  background-color: #D9D9D9;
+  color: rgb(255, 255, 255);
   border-color: #ccc;
   cursor: not-allowed;
 }
