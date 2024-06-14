@@ -64,11 +64,32 @@ var jsPsychSurveyHtmlForm = (function (jspsych) {
                       "</div>";
           }
           // start form
+          function validate() {
+            guessedRgb = data.response;
+            r = parseInt(guessedRgb.r)
+            if (isNaN(r) || r > 255 || r < 0){
+                alert('Please enter a valid integer between 0 and 255 for R value.');
+                return false;
+            }
+
+            g = parseInt(guessedRgb.g)
+            if (isNaN(g) || g > 255 || g < 0){
+                alert('Please enter a valid integer between 0 and 255 for G value.');
+                return false;
+            }
+
+            b = parseInt(guessedRgb.b)
+            if (isNaN(b) || b > 255 || b < 0){
+                alert('Please enter a valid integer between 0 and 255 for B value.');
+                return false;
+            }
+            return true;
+          }
           if (trial.autocomplete) {
-              html += '<form id="jspsych-survey-html-form">';
+              html += '<form id="jspsych-survey-html-form" onsubmit="return validate()">';
           }
           else {
-              html += '<form id="jspsych-survey-html-form" autocomplete="off">';
+              html += '<form id="jspsych-survey-html-form" autocomplete="off" onsubmit="return validate()">';
           }
           // add form HTML / input elements
           html += trial.html;

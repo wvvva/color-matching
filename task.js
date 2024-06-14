@@ -12,12 +12,12 @@ var timeline = [];
 var guessedRgb;
 var colorSim;
 var test_stimuli = [
-    { stimulus: "img/trail_1.png", rgb: 'rgb(146, 100, 144)'},
-    { stimulus: "img/trail_2.png", rgb: 'rgb(146, 100, 144)'},
-    { stimulus: "img/trail_3.png", rgb: 'rgb(146, 100, 144)'},
-    { stimulus: "img/trail_4.png", rgb: 'rgb(146, 100, 144)'},
-    { stimulus: "img/trail_5.png", rgb: 'rgb(146, 100, 144)'},
-    { stimulus: "img/trail_6.png", rgb: 'rgb(146, 100, 144)'},
+    { stimulus: "img/trail_1.png", rgb: 'rgb(153, 66, 66)'},
+    { stimulus: "img/trail_2.png", rgb: 'rgb(185, 231, 185)'},
+    { stimulus: "img/trail_3.png", rgb: 'rgb(68, 68, 106)'},
+    { stimulus: "img/trail_4.png", rgb: 'rgb(187, 191, 24)'},
+    { stimulus: "img/trail_5.png", rgb: 'rgb(216, 125, 231)'},
+    { stimulus: "img/trail_6.png", rgb: 'rgb(67, 145, 162)'},
 ];
 
 // Calculate color similarity, use euclidean distance on rgb values
@@ -25,7 +25,7 @@ function colorSimilarity(corAnswer, guess) {
     const [r1, g1, b1] = corAnswer.match(/\d+/g).map(Number);
     const [r2, g2, b2] = guess.match(/\d+/g).map(Number);
 
-    const maxD = 255 * Math.sqrt(3)
+    const maxD = Math.sqrt(Math.pow(Math.max(Math.abs(0 - r1), Math.abs(255 - r1)), 2) + Math.pow(Math.max(Math.abs(0 - g1), Math.abs(255 - g1)), 2) + Math.pow(Math.max(Math.abs(0 - b1), Math.abs(255 - b1)), 2))
 
     const euDistance = Math.sqrt(Math.pow(r1 - r2, 2) + Math.pow(g1 - g2, 2) + Math.pow(b1 - b2, 2))
 
