@@ -42,6 +42,7 @@ var jsPsychSurveyHtmlForm = (function (jspsych) {
           },
       },
   };
+
   /**
    * **survey-html-form**
    *
@@ -64,32 +65,12 @@ var jsPsychSurveyHtmlForm = (function (jspsych) {
                       "</div>";
           }
           // start form
-          function validate() {
-            guessedRgb = data.response;
-            r = parseInt(guessedRgb.r)
-            if (isNaN(r) || r > 255 || r < 0){
-                alert('Please enter a valid integer between 0 and 255 for R value.');
-                return false;
-            }
-
-            g = parseInt(guessedRgb.g)
-            if (isNaN(g) || g > 255 || g < 0){
-                alert('Please enter a valid integer between 0 and 255 for G value.');
-                return false;
-            }
-
-            b = parseInt(guessedRgb.b)
-            if (isNaN(b) || b > 255 || b < 0){
-                alert('Please enter a valid integer between 0 and 255 for B value.');
-                return false;
-            }
-            return true;
-          }
+          
           if (trial.autocomplete) {
-              html += '<form id="jspsych-survey-html-form" onsubmit="return validate()">';
+            html += '<form id="jspsych-survey-html-form" name="survey-html">';
           }
           else {
-              html += '<form id="jspsych-survey-html-form" autocomplete="off" onsubmit="return validate()">';
+            html += '<form id="jspsych-survey-html-form" autocomplete="off" name="survey-html">';
           }
           // add form HTML / input elements
           html += trial.html;
@@ -118,21 +99,26 @@ var jsPsychSurveyHtmlForm = (function (jspsych) {
               // don't submit form
               event.preventDefault();
               // measure response time
-              var endTime = performance.now();
-              var response_time = Math.round(endTime - startTime);
-              var this_form = display_element.querySelector("#jspsych-survey-html-form");
-              var question_data = serializeArray(this_form);
-              if (!trial.dataAsArray) {
-                  question_data = objectifyForm(question_data);
+              if (validate()){
+                var endTime = performance.now();
+                var response_time = Math.round(endTime - startTime);
+                var this_form = display_element.querySelector("#jspsych-survey-html-form");
+                var question_data = serializeArray(this_form);
+                if (!trial.dataAsArray) {
+                    question_data = objectifyForm(question_data);
+                }
+                // save data
+                var trialdata = {
+                    rt: response_time,
+                    response: question_data,
+                };
+                display_element.innerHTML = "";
+                // next trial
+                this.jsPsych.finishTrial(trialdata);
+              } else {
+                return false;
               }
-              // save data
-              var trialdata = {
-                  rt: response_time,
-                  response: question_data,
-              };
-              display_element.innerHTML = "";
-              // next trial
-              this.jsPsych.finishTrial(trialdata);
+              
           });
           var startTime = performance.now();
           /**
