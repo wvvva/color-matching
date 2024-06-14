@@ -357,6 +357,10 @@
 .jspsych-display-element input[type=text] {
   font-family: "Open Sans", "Arial", sans-serif;
   font-size: 14px;
+  width: 13vw; 
+  height:40px; 
+  border: none; 
+  background-color: #d42626
 }
 
 /* borrowing Bootstrap style for btn elements, but combining styles a bit */
@@ -365,7 +369,7 @@
   padding: 6px 12px;
   margin: 0px;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
   font-family: "Open Sans", "Arial", sans-serif;
   cursor: pointer;
   line-height: 1.4;
@@ -377,27 +381,23 @@
   border-radius: 4px;
   color: rgb(255, 255, 255);
   background-color: #87B9D5;
-  border-color: #ccc;
 }
 
 /* only apply the hover style on devices with a mouse/pointer that can hover - issue #977 */
 @media (hover: hover) {
   .jspsych-btn:hover {
     background-color: #87B9D5;
-    border-color: #aaa;
     color: rgb(255, 255, 255);
   }
 }
 .jspsych-btn:active {
   background-color: #87B9D5;
-  border-color: #000000;
   color: rgb(255, 255, 255);
 }
 
 .jspsych-btn:disabled {
   background-color: #D9D9D9;
   color: rgb(255, 255, 255);
-  border-color: #ccc;
   cursor: not-allowed;
 }
 
@@ -517,3 +517,4 @@
 #jspsych-data-display {
   text-align: left;
 }
+

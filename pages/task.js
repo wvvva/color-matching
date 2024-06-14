@@ -9,7 +9,10 @@ const heading = {
             <img src='../img/blue.png', alt='Blue Circle', style="width: 35vw; max-width: 400px">
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; margin: 2vw">
-            <img src="../img/blue.png" alt="Blue Circle" style="width: 5vw;">
+            <div>
+                <img src="../img/blue.png" alt="Blue Circle" style="width: 5vw;">
+                <input type="text" placeholder="Enter R value here" class="jspsych-display-element"/>
+            </div>
             <img src="../img/blue.png" alt="Blue Circle" style="width: 5vw; ">
             <img src="../img/blue.png" alt="Blue Circle" style="width: 5vw;">
         </div>
