@@ -75,10 +75,10 @@ var jsPsychSurveyHtmlForm = (function (jspsych) {
           // add form HTML / input elements
           html += trial.html;
           // add submit button
-          html +=
-              '<input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="' +
-                  trial.button_label +
-                  '"></input>';
+        //   html +=
+        //       '<input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="' +
+        //           trial.button_label +
+        //           '"></input>';
           html += "</form>";
           display_element.innerHTML = html;
           if (trial.autofocus !== "") {

@@ -40,11 +40,11 @@ var rgbTask = {
     html: function(){
     var img = jsPsych.timelineVariable('stimulus');
     return `
-    <div style='display: flex; justify-content: space-between; margin: 0 10vw 6vh 10vw'>
+    <div style='display: flex; justify-content: space-between; margin: 2vh 6vw 0 6vw'>
         <div style='text-align: center;'>
             <img src="${img}", style="width: 35vw; max-width: 400px">
         </div>
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; margin: 2vw; width: 40%">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
             <div style="display: flex; " >
                 <img src="img/red.png" style="width: 40px; margin-right: 2vw">
                 <input type="text" placeholder="Enter R value here (0~255)" name="r" class="jspsych-display-element"/>
@@ -57,10 +57,11 @@ var rgbTask = {
                 <img src="img/blue1.png" style="width: 40px; margin-right: 2vw">
                 <input type="text" placeholder="Enter B value here (0~255)" name="b" class="jspsych-display-element"/>
             </div>
+            <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT"></input>
         </div>
     </div>
     `},
-    button_label: "SUBMIT", 
+    // button_label: "SUBMIT", 
     data: {
         task: 'response',
         similarity: 'similarity'
@@ -79,7 +80,7 @@ var result = {
         return `
         <p style="font-size:48px;">YOUR GUESS</p>
         <p style="font-size:20px;">Your guessed color is ${colorSim.toFixed(2)}% similar to the given color</p>
-        <div style="display: flex; justify-content: center; align-items: center; margin: 10vh">
+        <div style="display: flex; justify-content: center; align-items: center; margin: 6vh 5vh 8vh 5vh">
             <div style="width: 20vw; height: 20vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
         </div>
         `;
