@@ -40,7 +40,7 @@ var rgbTask = {
     html: function(){
     var img = jsPsych.timelineVariable('stimulus');
     return `
-    <div style='display: flex; justify-content: space-between; margin: 2vh 6vw 0 6vw'>
+    <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
         <div style='text-align: center;'>
             <img src="${img}", style="width: 35vw; max-width: 400px">
         </div>

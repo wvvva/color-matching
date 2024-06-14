@@ -323,20 +323,24 @@
 }
 
 .jspsych-content-wrapper {
-  display: block;
-  margin: 0 5% 0 5%;
+  display: flex;
+  /* display: inline-block; */
+  margin: 5% 5% 5% 5%;
   flex: 1 1 100%;
   flex-wrap: wrap;
   /* alig */
-  align-content: center;
+  justify-content: center;
 }
 
 .jspsych-content {
-  max-width: 95%; /* this is mainly an IE 10-11 fix */
+  /* max-width: 95%;  */
+  /* this is mainly an IE 10-11 fix */
+  max-height: 95%;
+  width: 95%;
   text-align: center;
-  margin: 3% 5% 5% 5%; /* this is for overflowing content */
+  margin: 0; /* this is for overflowing content */
+  justify-content: space-between;
   align-self: center;
-  
 }
 
 .jspsych-top {
