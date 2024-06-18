@@ -4,7 +4,7 @@ const jsPsych = initJsPsych();
 // Changable variables
 // -----------------------------------
 // stimulus: How many seconds the result will be staying on the page (in seconds)
-var stimulus = 3; 
+var stimulus = 5; 
 
 
 
@@ -82,15 +82,15 @@ var rgbTask = {
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
             <div style="display: flex; " >
                 <img src="img/red.png" style="width: 40px; margin-right: 2vw">
-                <input type="text" placeholder="Enter R value here (0~255)" name="r" class="jspsych-display-element"/>
+                <input type="range" min="0" max="255" value="0" name="r" class="slider"/>
             </div>
             <div style="display: flex;">
                 <img src="img/green.png" style="width: 40px; margin-right: 2vw">
-                <input type="text" placeholder="Enter G value here (0~255)" name="g" class="jspsych-display-element"/>
+                <input type="range" min="0" max="255" value="0" class="slider" name="g" class="jspsych-display-element"/>
             </div>
             <div style="display: flex;">
                 <img src="img/blue1.png" style="width: 40px; margin-right: 2vw">
-                <input type="text" placeholder="Enter B value here (0~255)" name="b" class="jspsych-display-element"/>
+                <input type="range" min="0" max="255" value="0" class="slider" name="b" class="jspsych-display-element"/>
             </div>
             <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT"></input>
         </div>
