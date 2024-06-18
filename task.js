@@ -81,16 +81,34 @@ var rgbTask = {
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
             <div style="display: flex; " >
-                <img src="img/red.png" style="width: 40px; margin-right: 2vw">
-                <input type="range" min="0" max="255" value="0" name="r" class="slider"/>
+                <img src="img/red.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                <div style="width: 15vw; display: flex; flex-direction: column;" >
+                    <input type="range" min="0" max="255" value="0" name="r" class="slider"/>
+                    <div style="display: flex; justify-content: space-between;" >
+                        <span style="font-size: 15px;">0</span>
+                        <span style="font-size: 15px;">255</span>
+                    </div>
+                </div>
             </div>
             <div style="display: flex;">
-                <img src="img/green.png" style="width: 40px; margin-right: 2vw">
-                <input type="range" min="0" max="255" value="0" class="slider" name="g" class="jspsych-display-element"/>
+                <img src="img/green.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                <div style="width: 15vw; display: flex; flex-direction: column;" >
+                    <input type="range" min="0" max="255" value="0" class="slider" name="g"/>
+                    <div style="display: flex; justify-content: space-between;" >
+                        <span style="font-size: 15px;">0</span>
+                        <span style="font-size: 15px;">255</span>
+                    </div>
+                </div>
             </div>
             <div style="display: flex;">
-                <img src="img/blue1.png" style="width: 40px; margin-right: 2vw">
-                <input type="range" min="0" max="255" value="0" class="slider" name="b" class="jspsych-display-element"/>
+                <img src="img/blue1.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                <div style="width: 15vw; display: flex; flex-direction: column;" >
+                    <input type="range" min="0" max="255" value="0" class="slider" name="b"/>
+                    <div style="display: flex; justify-content: space-between;" >
+                        <span style="font-size: 15px;">0</span>
+                        <span style="font-size: 15px;">255</span>
+                    </div>
+                </div>
             </div>
             <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT"></input>
         </div>
@@ -112,11 +130,19 @@ var rgbTask = {
 var result = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function(){
+        var img = jsPsych.timelineVariable('stimulus');
         return `
-        <p style="font-size:48px;">YOUR GUESS</p>
+        <p style="font-size:48px; ">RESULT</p>
         <p style="font-size:20px;">Your guessed color is ${colorSim.toFixed(2)}% similar to the given color</p>
-        <div style="display: flex; justify-content: center; align-items: center; margin: 6vh 5vh 8vh 5vh">
-            <div style="width: 20vw; height: 20vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
+        <div style="display: flex; justify-content: space-evenly; align-items: center; margin: 6vh 5vh 8vh 5vh">
+            <div> 
+                <p style="font-size:20px; margin-left: 5vw;">Correct Answer</p>
+                <img src="${img}", style="margin-left: 5vw; margin-top: 5px; width: 20vw; height: 20vw;">
+            </div>
+            <div>
+                <p style="font-size:20px; margin-right: 5vw;">Your Guess</p>
+                <div style="margin-right: 5vw; width: 20vw; height: 20vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
+            </div>
         </div>
         `;
     },

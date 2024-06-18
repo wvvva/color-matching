@@ -353,10 +353,13 @@
 
 /* fonts and type */
 .jspsych-display-element {
-  font-family: "Open Sans", "Arial", sans-serif;
-  font-size: 18px;
-  line-height: 1.6em;
-  color: #6B6B6B
+    -webkit-appearance: none;
+    outline: none;
+    font-family: "Open Sans", "Arial", sans-serif;
+    font-size: 18px;
+    line-height: 1.6em;
+    color: #6B6B6B;
+    width: 13vw; 
 }
 
 /* Form elements like input fields and buttons */
@@ -376,8 +379,10 @@
 
 .slider {
   -webkit-appearance: none;
-  width: 100%;
-  height: 25px;
+  margin-top: 14px;
+  width: 15vw;
+  height: 8px;
+  border-radius: 5px;
   background: #d3d3d3;
   outline: none;
   opacity: 0.7;
@@ -392,16 +397,18 @@
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 25px;
-  height: 25px;
-  background: #6B6B6B;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #7d7d7d;
   cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  background: #6B6B6B;
+  width: 20;
+  height: 20;
+  border-radius: 50%;
+  background: #7d7d7d;
   cursor: pointer;
 }
 
