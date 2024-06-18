@@ -3,7 +3,7 @@ const jsPsych = initJsPsych();
 // //////////////////////////////////////
 // Changable variables
 // -----------------------------------
-// stimulus: How many seconds the result will be staying on the page (in seconds)
+// stimulus: How long the result will be staying on the page (in seconds)
 var stimulus = 5; 
 
 
