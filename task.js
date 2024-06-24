@@ -1,5 +1,3 @@
-const jsPsych = initJsPsych();
-
 // //////////////////////////////////////
 // Changable variables
 // -----------------------------------
@@ -11,14 +9,35 @@ var stimulus = 5;
 var timeline = [];
 var guessedRgb;
 var colorSim;
-var test_stimuli = [
-    { stimulus: "img/trail_1.png", rgb: 'rgb(153, 66, 66)'},
-    { stimulus: "img/trail_2.png", rgb: 'rgb(185, 231, 185)'},
-    { stimulus: "img/trail_3.png", rgb: 'rgb(68, 68, 106)'},
-    { stimulus: "img/trail_4.png", rgb: 'rgb(187, 191, 24)'},
-    { stimulus: "img/trail_5.png", rgb: 'rgb(216, 125, 231)'},
-    { stimulus: "img/trail_6.png", rgb: 'rgb(67, 145, 162)'},
+var start_stimuli = [
+    'rgb(227, 66, 52)',
+    'rgb(255, 192, 0)',
+    'rgb(192, 255, 0)',
+    'rgb(63, 255, 0)',
+    'rgb(0, 255, 64)',
+    'rgb(127, 255, 212)',
+    'rgb(0, 192, 255)',
+    'rgb(0, 64, 255)',
+    'rgb(106, 93, 255)',
+    'rgb(128, 0, 128)',
+    'rgb(222, 49, 99)',
+    'rgb(220, 20, 60)',
 ];
+
+var test_stimuli = [
+    // { rgb: 'rgb(220, 20, 60)'}
+]
+
+for(let i = 0; i < start_stimuli.length; i++){
+    var colorlist = colorGeneration(start_stimuli[i])
+    for (let j = 0; j < colorlist.length; j++){
+        var dic = {}
+        dic['rgb'] = colorlist[j]
+        test_stimuli.push(dic)
+    }
+}
+
+const jsPsych = initJsPsych();
 
 // Changed from https://github.com/antimatter15/rgb-lab/blob/master/color.js
 function rgb2lab(rgb){
@@ -42,6 +61,40 @@ function rgb2lab(rgb){
     z = (z > 0.008856) ? Math.pow(z, 1/3) : (7.787 * z) + 16/116;
   
     return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)]
+  }
+
+  function lighter(rgbA, t){
+    const [r1, g1, b1] = rgbA.match(/\d+/g).map(Number)
+    result = []
+
+    result[0] = parseInt(r1 + (255 - r1) * t)
+    result[1] = parseInt(g1 + (255 - g1) * t)
+    result[2] = parseInt(b1 + (255 - b1) * t)
+
+    return `rgb(${result[0]}, ${result[1]}, ${result[2]})`
+  }
+
+  function darker(rgbA, t){
+    const [r1, g1, b1] = rgbA.match(/\d+/g).map(Number)
+    result = []
+
+    result[0] = parseInt(r1 * t)
+    result[1] = parseInt(g1 * t)
+    result[2] = parseInt(b1 * t)
+
+    return `rgb(${result[0]}, ${result[1]}, ${result[2]})`
+  }
+
+  function colorGeneration(rgb){
+    color = []
+    for (let t = 0; t < 5; t++){
+        color[t] = darker(rgb, (t + 1)/6) 
+    }
+
+    for (let t = 0; t < 5; t++){
+        color[t + 5] = lighter(rgb, t/6) 
+    }
+    return color
   }
   
   // calculate the perceptual distance between colors in CIELAB
@@ -73,11 +126,11 @@ function rgb2lab(rgb){
 var rgbTask = {
     type: jsPsychSurveyHtmlForm,
     html: function(){
-    var img = jsPsych.timelineVariable('stimulus');
+    var img = jsPsych.timelineVariable('rgb');
     return `
     <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
         <div style='text-align: center;'>
-            <img src="${img}", style="width: 35vw; max-width: 400px">
+            <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
             <div style="display: flex; " >
@@ -86,7 +139,7 @@ var rgbTask = {
                     <input type="range" min="0" max="255" value="0" name="r" class="slider"/>
                     <div style="display: flex; justify-content: space-between;" >
                         <span style="font-size: 15px;">0</span>
-                        <span style="font-size: 15px;">255</span>
+                        <span style="font-size: 15px;">MAX</span>
                     </div>
                 </div>
             </div>
@@ -96,7 +149,7 @@ var rgbTask = {
                     <input type="range" min="0" max="255" value="0" class="slider" name="g"/>
                     <div style="display: flex; justify-content: space-between;" >
                         <span style="font-size: 15px;">0</span>
-                        <span style="font-size: 15px;">255</span>
+                        <span style="font-size: 15px;">MAX</span>
                     </div>
                 </div>
             </div>
@@ -106,7 +159,7 @@ var rgbTask = {
                     <input type="range" min="0" max="255" value="0" class="slider" name="b"/>
                     <div style="display: flex; justify-content: space-between;" >
                         <span style="font-size: 15px;">0</span>
-                        <span style="font-size: 15px;">255</span>
+                        <span style="font-size: 15px;">MAX</span>
                     </div>
                 </div>
             </div>
@@ -130,18 +183,21 @@ var rgbTask = {
 var result = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function(){
-        var img = jsPsych.timelineVariable('stimulus');
+        var img = jsPsych.timelineVariable('rgb');
+        console.log(colorSim.toFixed(2));
+        // <p style="font-size:10px;">Your guessed color is ${colorSim.toFixed(2)}% similar to the given color</p>
         return `
-        <p style="font-size:48px; ">RESULT</p>
-        <p style="font-size:20px;">Your guessed color is ${colorSim.toFixed(2)}% similar to the given color</p>
-        <div style="display: flex; justify-content: space-evenly; align-items: center; margin: 6vh 5vh 8vh 5vh">
-            <div> 
-                <p style="font-size:20px; margin-left: 5vw;">Correct Answer</p>
-                <img src="${img}", style="margin-left: 5vw; margin-top: 5px; width: 20vw; height: 20vw;">
+        <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
+            <div style='text-align: center;'>
+                <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
             </div>
-            <div>
-                <p style="font-size:20px; margin-right: 5vw;">Your Guess</p>
-                <div style="margin-right: 5vw; width: 20vw; height: 20vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
+                <div style="display: flex; justify-content: space-evenly; align-items: center; margin: 0vh 5vh 0vh 5vh">
+                    <div>
+                        <p style="font-size:20px; margin-right: 5vw;">Your Guess</p>
+                        <div style="margin-right: 5vw; width: 20vw; height: 20vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
+                    </div>
+                </div>
             </div>
         </div>
         `;
