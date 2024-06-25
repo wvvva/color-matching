@@ -5,7 +5,7 @@
 // criterion_change: How many trails before the participant reselecting their criterion
 // criterion: Start with how many number of stars
 var stimulus = 5; 
-var criterion_change = 1;
+var criterion_change = 5;
 var criterion = 2;
 
 
