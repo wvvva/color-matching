@@ -1,14 +1,20 @@
 // //////////////////////////////////////
 // Changable variables
 // -----------------------------------
-// stimulus: How long the result will be staying on the page (in seconds)
+// stimulus: How long the result will be staying on the page (in seconds) (inhibited)
+// criterion_change: How many trails before the participant reselecting their criterion
 var stimulus = 5; 
+var criterion_change = 1;
 
 
 
 var timeline = [];
+var trail = 0;
 var guessedRgb;
 var colorSim;
+var prediction;
+var evaluation;
+var criterion = 7;
 var start_stimuli = [
     'rgb(227, 66, 52)',
     'rgb(255, 192, 0)',
@@ -126,63 +132,95 @@ function rgb2lab(rgb){
 var rgbTask = {
     type: jsPsychSurveyHtmlForm,
     html: function(){
-    var img = jsPsych.timelineVariable('rgb');
-    return `
-    <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
-        <div style='text-align: center;'>
-            <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
+        var img = jsPsych.timelineVariable('rgb');
+        return `
+        <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
+            <div style='text-align: center;'>
+                <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
+                <div style="display: flex;">
+                    <img src="img/red.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                    <div style="width: 15vw; display: flex; flex-direction: column;">
+                        <input type="range" min="0" max="255" value="0" name="r" class="slider"/>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="font-size: 15px;">0</span>
+                            <span style="font-size: 15px;">MAX</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex;">
+                    <img src="img/green.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                    <div style="width: 15vw; display: flex; flex-direction: column;">
+                        <input type="range" min="0" max="255" value="0" class="slider" name="g"/>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="font-size: 15px;">0</span>
+                            <span style="font-size: 15px;">MAX</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex;">
+                    <img src="img/blue1.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                    <div style="width: 15vw; display: flex; flex-direction: column;">
+                        <input type="range" min="0" max="255" value="0" class="slider" name="b"/>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="font-size: 15px;">0</span>
+                            <span style="font-size: 15px;">MAX</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="star-rating">
+                    <span data-value="7" class="star">★</span>
+                    <span data-value="6" class="star">★</span>
+                    <span data-value="5" class="star">★</span>
+                    <span data-value="4" class="star">★</span>
+                    <span data-value="3" class="star">★</span>
+                    <span data-value="2" class="star">★</span>
+                    <span data-value="1" class="star">★</span>
+                </div>
+                <input type="hidden" name="rating" id="rating" value="">
+                <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT"></input>
+            </div>
         </div>
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
-            <div style="display: flex; " >
-                <img src="img/red.png" style="width: 40px; height: 40px; margin-right: 2vw">
-                <div style="width: 15vw; display: flex; flex-direction: column;" >
-                    <input type="range" min="0" max="255" value="0" name="r" class="slider"/>
-                    <div style="display: flex; justify-content: space-between;" >
-                        <span style="font-size: 15px;">0</span>
-                        <span style="font-size: 15px;">MAX</span>
-                    </div>
-                </div>
-            </div>
-            <div style="display: flex;">
-                <img src="img/green.png" style="width: 40px; height: 40px; margin-right: 2vw">
-                <div style="width: 15vw; display: flex; flex-direction: column;" >
-                    <input type="range" min="0" max="255" value="0" class="slider" name="g"/>
-                    <div style="display: flex; justify-content: space-between;" >
-                        <span style="font-size: 15px;">0</span>
-                        <span style="font-size: 15px;">MAX</span>
-                    </div>
-                </div>
-            </div>
-            <div style="display: flex;">
-                <img src="img/blue1.png" style="width: 40px; height: 40px; margin-right: 2vw">
-                <div style="width: 15vw; display: flex; flex-direction: column;" >
-                    <input type="range" min="0" max="255" value="0" class="slider" name="b"/>
-                    <div style="display: flex; justify-content: space-between;" >
-                        <span style="font-size: 15px;">0</span>
-                        <span style="font-size: 15px;">MAX</span>
-                    </div>
-                </div>
-            </div>
-            <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT"></input>
-        </div>
-    </div>
-    `},
-    // button_label: "SUBMIT", 
+        `;
+    },
     data: {
         task: 'response',
-        similarity: 'similarity'
+        similarity: 'similarity',
+        prediction: 'prediction'
+    },
+    on_load: function() {
+        const stars = document.querySelectorAll('.star-rating .star');
+        const ratingInput = document.getElementById('rating');
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const value = star.getAttribute('data-value');
+                ratingInput.value = value;
+                
+                stars.forEach(s => s.classList.remove('selected'));
+                
+                star.classList.add('selected');
+                prediction = ratingInput.value;
+            });
+        });
     },
     on_finish: function(data){
         guessedRgb = data.response;
         guessedRgb = `rgb(${guessedRgb.r}, ${guessedRgb.g}, ${guessedRgb.b})`;
         colorSim = colorSimilarity(jsPsych.timelineVariable('rgb'), guessedRgb);
+        data.similarity = colorSim;
+        data.prediction = prediction;
+        console.log(data);
+        trail = trail + 1;
     }
 };
 
+
 // Present the color of participant's guess
 var result = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: function(){
+    type: jsPsychSurveyHtmlForm,
+    html: function(){
         var img = jsPsych.timelineVariable('rgb');
         console.log(colorSim.toFixed(2));
         // <p style="font-size:10px;">Your guessed color is ${colorSim.toFixed(2)}% similar to the given color</p>
@@ -191,21 +229,80 @@ var result = {
             <div style='text-align: center;'>
                 <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
-                <div style="display: flex; justify-content: space-evenly; align-items: center; margin: 0vh 5vh 0vh 5vh">
-                    <div>
-                        <p style="font-size:20px; margin-right: 5vw;">Your Guess</p>
-                        <div style="margin-right: 5vw; width: 20vw; height: 20vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
-                    </div>
-                </div>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 0vw 0vw 0vw 4vw; width: 40%">
+                        <p style="font-size:20px; margin-right: 5vw; margin-top: 0; margin-bottom: 0;">Your Guess</p>
+                        <div style="margin-right: 5vw; width: 15vw; height: 15vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
+                        <div class="star-rating" style="margin-right: 5vw;">
+                            <span data-value="7" class="star">★</span>
+                            <span data-value="6" class="star">★</span>
+                            <span data-value="5" class="star">★</span>
+                            <span data-value="4" class="star">★</span>
+                            <span data-value="3" class="star">★</span>
+                            <span data-value="2" class="star">★</span>
+                            <span data-value="1" class="star">★</span>
+                        </div>
+                        <input type="hidden" name="rating" id="rating" value="">
+                        <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" style="margin-right: 5vw;" value="SUBMIT"></input>
             </div>
         </div>
+
         `;
     },
-    stimulus_duration: 1000 * stimulus,
-    trial_duration:1000 * stimulus,
-    choices: "NO_KEYS"
+    data: {
+        evaluation: 'evaluation'
+    },
+    on_load: function() {
+        const stars = document.querySelectorAll('.star-rating .star');
+        const ratingInput = document.getElementById('rating');
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const value = star.getAttribute('data-value');
+                ratingInput.value = value;
+                
+                stars.forEach(s => s.classList.remove('selected'));
+                
+                star.classList.add('selected');
+                evaluation = ratingInput.value;
+            });
+        });
+    },
+    on_finish: function(data){
+        data.evaluation = evaluation;
+        console.log(data);
+    }
 };
+
+var criterion_trial = {
+    type: jsPsychHtmlSliderResponse,
+    stimulus: `<div style="width:100%; align-items: center">
+        <p>Instruction</p>
+        <div style="width:240px; float: left;">
+            <p>TEAM A</p>
+            <p>10 wins, 5 losses, 6 draws</p>
+        </div>
+        <div style="width:240px; float: right;">
+            <p>TEAM B</p>
+            <p>6 wins, 4 losses, 11 draws</p>
+        </div>
+        </div>`,
+    labels: ["2", "4", "6", "8", "10"],
+    min: 2,
+    max: 10,
+    slider_start: 2,
+    slider_width: 500
+}
+
+var criterion_node = {
+    timeline: [criterion_trial],
+    conditional_function: function(){
+        if(trail % criterion_change == 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 
 var end = {
     type: jsPsychHtmlKeyboardResponse,
@@ -218,7 +315,7 @@ var end = {
 };
 
 var test_procedure = {
-    timeline: [rgbTask, result],
+    timeline: [rgbTask, result, criterion_node],
     timeline_variables: test_stimuli
 }
 

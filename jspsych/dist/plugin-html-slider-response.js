@@ -101,7 +101,7 @@ var jsPsychHtmlSliderResponse = (function (jspsych) {
       trial(display_element, trial) {
           // half of the thumb width value from jspsych.css, used to adjust the label positions
           var half_thumb_width = 7.5;
-          var html = '<div id="jspsych-html-slider-response-wrapper" style="margin: 100px 0px;">';
+          var html = '<div id="jspsych-html-slider-response-wrapper" style="margin: 100px 0px 0px 20%; width: 60%;">';
           html += '<div id="jspsych-html-slider-response-stimulus">' + trial.stimulus + "</div>";
           html +=
               '<div class="jspsych-html-slider-response-container" style="position:relative; margin: 0 auto 3em auto; ';

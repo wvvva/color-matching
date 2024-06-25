@@ -566,3 +566,27 @@
 #jspsych-data-display {
   text-align: left;
 }
+
+.star-rating {
+  direction: rtl;
+  display: inline-flex;
+  font-size: 2rem;
+  justify-content: space-evenly;
+  width: 60%
+}
+
+.star-rating span{
+  cursor: pointer;
+  color: #ccc;
+  user-select: none;
+}
+
+.star-rating span:hover,
+.star-rating span:hover ~ span {
+  color: #fc0;
+}
+
+.star-rating .selected,
+.star-rating .selected ~ span {
+  color: #fc0;
+}
