@@ -583,10 +583,14 @@
 
 .star-rating span:hover,
 .star-rating span:hover ~ span {
-  color: #fc0;
+  color: rgb(252, 224, 110);
 }
 
 .star-rating .selected,
 .star-rating .selected ~ span {
   color: #fc0;
+}
+
+.star.hidden {
+  visibility: hidden;
 }

@@ -3,8 +3,10 @@
 // -----------------------------------
 // stimulus: How long the result will be staying on the page (in seconds) (inhibited)
 // criterion_change: How many trails before the participant reselecting their criterion
+// criterion: Start with how many number of stars
 var stimulus = 5; 
 var criterion_change = 1;
+var criterion = 2;
 
 
 
@@ -14,7 +16,6 @@ var guessedRgb;
 var colorSim;
 var prediction;
 var evaluation;
-var criterion = 7;
 var start_stimuli = [
     'rgb(227, 66, 52)',
     'rgb(255, 192, 0)',
@@ -128,17 +129,33 @@ function rgb2lab(rgb){
     return i < 0 ? 0 : 100 - Math.sqrt(i);
   }
 
+  function showStars(criterion) {
+    const stars = document.querySelectorAll('.star-rating .star');
+    stars.forEach(star => {
+        const value = parseInt(star.getAttribute('data-value'));
+        if (value <= criterion) {
+            if (star.classList.contains('hidden')) {
+                star.classList.remove('hidden');
+            }
+        } else {
+            console.log("here");
+            star.classList.add('hidden');
+        }
+    });
+}
+
 // rgb task: guess rgb values
 var rgbTask = {
     type: jsPsychSurveyHtmlForm,
     html: function(){
         var img = jsPsych.timelineVariable('rgb');
+        var margin_star = (10 - criterion) * 29
         return `
         <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
             <div style='text-align: center;'>
                 <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 2vw 2vw 2vw 2vw; width: 40%">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 0vw 2vw 0vw 2vw; width: 40%">
                 <div style="display: flex;">
                     <img src="img/red.png" style="width: 40px; height: 40px; margin-right: 2vw">
                     <div style="width: 15vw; display: flex; flex-direction: column;">
@@ -169,17 +186,23 @@ var rgbTask = {
                         </div>
                     </div>
                 </div>
-                <div class="star-rating">
-                    <span data-value="7" class="star">★</span>
-                    <span data-value="6" class="star">★</span>
-                    <span data-value="5" class="star">★</span>
-                    <span data-value="4" class="star">★</span>
-                    <span data-value="3" class="star">★</span>
-                    <span data-value="2" class="star">★</span>
-                    <span data-value="1" class="star">★</span>
+                <div>
+                    <p style="margin-bottom: 10px; font-size: 18px">Your Confidence Level</p>
+                    <div class="star-rating" style="margin-left: 1vw; margin-left: ${margin_star}px;">
+                        <span data-value="10" class="star">★</span>
+                        <span data-value="9" class="star">★</span>
+                        <span data-value="8" class="star">★</span>
+                        <span data-value="7" class="star">★</span>
+                        <span data-value="6" class="star">★</span>
+                        <span data-value="5" class="star">★</span>
+                        <span data-value="4" class="star">★</span>
+                        <span data-value="3" class="star">★</span>
+                        <span data-value="2" class="star">★</span>
+                        <span data-value="1" class="star">★</span>
+                    </div>
+                    <input type="hidden" name="rating" id="rating" value="">
                 </div>
-                <input type="hidden" name="rating" id="rating" value="">
-                <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT"></input>
+                <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT" style="margin-right: 1vw"></input>
             </div>
         </div>
         `;
@@ -190,6 +213,7 @@ var rgbTask = {
         prediction: 'prediction'
     },
     on_load: function() {
+        showStars(criterion)
         const stars = document.querySelectorAll('.star-rating .star');
         const ratingInput = document.getElementById('rating');
 
@@ -222,6 +246,7 @@ var result = {
     type: jsPsychSurveyHtmlForm,
     html: function(){
         var img = jsPsych.timelineVariable('rgb');
+        var margin_star = (10 - criterion) * 29
         console.log(colorSim.toFixed(2));
         // <p style="font-size:10px;">Your guessed color is ${colorSim.toFixed(2)}% similar to the given color</p>
         return `
@@ -229,20 +254,28 @@ var result = {
             <div style='text-align: center;'>
                 <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 0vw 0vw 0vw 4vw; width: 40%">
-                        <p style="font-size:20px; margin-right: 5vw; margin-top: 0; margin-bottom: 0;">Your Guess</p>
-                        <div style="margin-right: 5vw; width: 15vw; height: 15vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
-                        <div class="star-rating" style="margin-right: 5vw;">
-                            <span data-value="7" class="star">★</span>
-                            <span data-value="6" class="star">★</span>
-                            <span data-value="5" class="star">★</span>
-                            <span data-value="4" class="star">★</span>
-                            <span data-value="3" class="star">★</span>
-                            <span data-value="2" class="star">★</span>
-                            <span data-value="1" class="star">★</span>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 0vw 2vw 0vw 2vw; width: 40%">
+                        <div style = "height: 57%">
+                            <p style="font-size:20px; margin-top: 0; margin-bottom: 2vh;">Your Guess</p>
+                            <div style="width: 13vw; height: 13vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
                         </div>
-                        <input type="hidden" name="rating" id="rating" value="">
-                        <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" style="margin-right: 5vw;" value="SUBMIT"></input>
+                        <div style="margin-bottom: 10px">
+                            <p style="margin-bottom: 10px; font-size: 18px">Your Confidence Level</p>
+                            <div class="star-rating" style="margin-left: 1vw; margin-left: ${margin_star}px;">
+                                <span data-value="10" class="star">★</span>
+                                <span data-value="9" class="star">★</span>
+                                <span data-value="8" class="star">★</span>
+                                <span data-value="7" class="star">★</span>
+                                <span data-value="6" class="star">★</span>
+                                <span data-value="5" class="star">★</span>
+                                <span data-value="4" class="star">★</span>
+                                <span data-value="3" class="star">★</span>
+                                <span data-value="2" class="star">★</span>
+                                <span data-value="1" class="star">★</span>
+                            </div>
+                            <input type="hidden" name="rating" id="rating" value="">
+                        </div>
+                        <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT" style="margin-right: 1vw"></input>
             </div>
         </div>
 
@@ -252,6 +285,7 @@ var result = {
         evaluation: 'evaluation'
     },
     on_load: function() {
+        showStars(criterion)
         const stars = document.querySelectorAll('.star-rating .star');
         const ratingInput = document.getElementById('rating');
 
@@ -277,20 +311,15 @@ var criterion_trial = {
     type: jsPsychHtmlSliderResponse,
     stimulus: `<div style="width:100%; align-items: center">
         <p>Instruction</p>
-        <div style="width:240px; float: left;">
-            <p>TEAM A</p>
-            <p>10 wins, 5 losses, 6 draws</p>
-        </div>
-        <div style="width:240px; float: right;">
-            <p>TEAM B</p>
-            <p>6 wins, 4 losses, 11 draws</p>
-        </div>
         </div>`,
     labels: ["2", "4", "6", "8", "10"],
     min: 2,
     max: 10,
     slider_start: 2,
-    slider_width: 500
+    slider_width: 500,
+    on_finish: function(data){
+        criterion = data.response
+    }
 }
 
 var criterion_node = {
