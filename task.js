@@ -272,7 +272,6 @@ var result = {
         for (let i = criterion; i > 0; i--){
             starcode += `<span data-value="${i}" class="star">★</span>`
         }
-        console.log(starcode);
         // <p style="font-size:10px;">Your guessed color is ${colorSim.toFixed(2)}% similar to the given color</p>
         return `
             <div style='display: flex; justify-content: space-around; margin: 2.76% 3vw 0 3vw; height: 90%'>
