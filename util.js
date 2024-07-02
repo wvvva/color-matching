@@ -9,7 +9,6 @@ function validate(context) {
     // r = parseInt(document.forms["survey-html"]["r"].value)
     rating = parseInt(document.forms["survey-html"]["rating"].value)
     
-    console.log(rating);
     if  (isNaN(rating)){
         alert('Please select at least one option for the rating.');
         return false;
