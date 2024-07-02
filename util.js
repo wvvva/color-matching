@@ -1,5 +1,6 @@
-function validate(context) {
-    if(context == "prediction"){
+function validate() {
+    console.log(document.forms["survey-html"]);
+    if(document.forms["survey-html"].length > 1){
         ratingconf = parseInt(document.forms["survey-html"]["rating-conf"].value)
         if  (isNaN(ratingconf)){
             alert('Please select at least one star for the confidence rating.');
@@ -8,7 +9,7 @@ function validate(context) {
     }
     // r = parseInt(document.forms["survey-html"]["r"].value)
     rating = parseInt(document.forms["survey-html"]["rating"].value)
-    
+
     if  (isNaN(rating)){
         alert('Please select at least one option for the rating.');
         return false;
