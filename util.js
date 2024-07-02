@@ -1,6 +1,5 @@
 function validate() {
-    console.log(document.forms["survey-html"]);
-    if(document.forms["survey-html"].length > 1){
+    if(document.forms["survey-html"]["rating-conf"]){
         ratingconf = parseInt(document.forms["survey-html"]["rating-conf"].value)
         if  (isNaN(ratingconf)){
             alert('Please select at least one star for the confidence rating.');
