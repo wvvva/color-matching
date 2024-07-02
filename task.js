@@ -15,6 +15,7 @@ var trail = 0;
 var guessedRgb;
 var colorSim;
 var prediction;
+var confidence;
 var evaluation;
 var start_stimuli = [
     'rgb(227, 66, 52)',
@@ -94,8 +95,8 @@ function rgb2lab(rgb){
 
   function colorGeneration(rgb){
     color = []
-    for (let t = 0; t < 5; t++){
-        color[t] = darker(rgb, (t + 1)/6) 
+    for (let t = 1; t < 6; t++){
+        color[t - 1] = darker(rgb, (t + 1)/6) 
     }
 
     for (let t = 0; t < 5; t++){
@@ -129,33 +130,22 @@ function rgb2lab(rgb){
     return i < 0 ? 0 : 100 - Math.sqrt(i);
   }
 
-  function showStars(criterion) {
-    const stars = document.querySelectorAll('.star-rating .star');
-    stars.forEach(star => {
-        const value = parseInt(star.getAttribute('data-value'));
-        if (value <= criterion) {
-            if (star.classList.contains('hidden')) {
-                star.classList.remove('hidden');
-            }
-        } else {
-            console.log("here");
-            star.classList.add('hidden');
-        }
-    });
-}
-
 // rgb task: guess rgb values
 var rgbTask = {
     type: jsPsychSurveyHtmlForm,
     html: function(){
         var img = jsPsych.timelineVariable('rgb');
-        var margin_star = (10 - criterion) * 29
+        var starcode = ''
+        for (let i = criterion; i > 0; i--){
+            starcode += `<span data-value="${i}" class="star">★</span>`
+        }
+        console.log(starcode);
         return `
-        <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
-            <div style='text-align: center;'>
+        <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw; height: 90%'>
+            <div style='text-align: center; height: 50vh;'>
                 <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 0vw 2vw 0vw 2vw; width: 40%">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 0vw 2vw 0vw 2vw; width: 40%; height: 50vh">
                 <div style="display: flex;">
                     <img src="img/red.png" style="width: 40px; height: 40px; margin-right: 2vw">
                     <div style="width: 15vw; display: flex; flex-direction: column;">
@@ -187,33 +177,37 @@ var rgbTask = {
                     </div>
                 </div>
                 <div>
-                    <p style="margin-bottom: 10px; font-size: 18px">Your Confidence Level</p>
-                    <div class="star-rating" style="margin-left: 1vw; margin-left: ${margin_star}px;">
-                        <span data-value="10" class="star">★</span>
-                        <span data-value="9" class="star">★</span>
-                        <span data-value="8" class="star">★</span>
-                        <span data-value="7" class="star">★</span>
-                        <span data-value="6" class="star">★</span>
-                        <span data-value="5" class="star">★</span>
-                        <span data-value="4" class="star">★</span>
-                        <span data-value="3" class="star">★</span>
-                        <span data-value="2" class="star">★</span>
-                        <span data-value="1" class="star">★</span>
+                    <div class="star-rating" style="margin-right:90px">
+                        ${starcode}
+                        <input type="button" class="nonstar" id="conf" value="Zero ★"></input>
                     </div>
                     <input type="hidden" name="rating" id="rating" value="">
+                    <p style="margin-bottom: 10px; font-size: 18px">Your Confidence Level</p>
+                    <div class="star-rating">
+                        <span data-value="7" class="star-conf">★</span>
+                        <span data-value="6" class="star-conf">★</span>
+                        <span data-value="5" class="star-conf">★</span>
+                        <span data-value="4" class="star-conf">★</span>
+                        <span data-value="3" class="star-conf">★</span>
+                        <span data-value="2" class="star-conf">★</span>
+                        <span data-value="1" class="star-conf">★</span>
+                    </div>
+                    <input type="hidden" name="rating-conf" id="rating-conf" value="">
                 </div>
                 <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT" style="margin-right: 1vw"></input>
             </div>
+        </div>
+        <div style="height: 6vh">
         </div>
         `;
     },
     data: {
         task: 'response',
         similarity: 'similarity',
-        prediction: 'prediction'
+        prediction: 'prediction',
+        confidence: 'confidence',
     },
     on_load: function() {
-        showStars(criterion)
         const stars = document.querySelectorAll('.star-rating .star');
         const ratingInput = document.getElementById('rating');
 
@@ -226,6 +220,33 @@ var rgbTask = {
                 
                 star.classList.add('selected');
                 prediction = ratingInput.value;
+                document.querySelector('.star-rating .nonstar').classList.remove('selected');
+            });
+        });
+
+        document.querySelector('.star-rating .nonstar').addEventListener('click', () => {
+            ratingInput.value = 0;
+            
+            document.querySelector('.star-rating .nonstar').classList.remove('selected');
+            document.querySelector('.star-rating .nonstar').classList.add('selected');
+            stars.forEach(s => s.classList.remove('selected'));
+
+            prediction = ratingInput.value;
+        });
+
+        const starsConf = document.querySelectorAll('.star-rating .star-conf');
+        const ratingInputConf = document.getElementById('rating-conf');
+
+        starsConf.forEach(star => {
+            star.addEventListener('click', () => {
+                const value = star.getAttribute('data-value');
+                ratingInputConf.value = value;
+                
+                
+                starsConf.forEach(s => s.classList.remove('selected'));
+                
+                star.classList.add('selected');
+                confidence = ratingInputConf.value;
             });
         });
     },
@@ -235,6 +256,7 @@ var rgbTask = {
         colorSim = colorSimilarity(jsPsych.timelineVariable('rgb'), guessedRgb);
         data.similarity = colorSim;
         data.prediction = prediction;
+        data.confidence = confidence;
         console.log(data);
         trail = trail + 1;
     }
@@ -246,38 +268,32 @@ var result = {
     type: jsPsychSurveyHtmlForm,
     html: function(){
         var img = jsPsych.timelineVariable('rgb');
-        var margin_star = (10 - criterion) * 29
-        console.log(colorSim.toFixed(2));
+        var starcode = ''
+        for (let i = criterion; i > 0; i--){
+            starcode += `<span data-value="${i}" class="star">★</span>`
+        }
+        console.log(starcode);
         // <p style="font-size:10px;">Your guessed color is ${colorSim.toFixed(2)}% similar to the given color</p>
         return `
-        <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
-            <div style='text-align: center;'>
-                <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 0vw 2vw 0vw 2vw; width: 40%">
-                        <div style = "height: 57%">
-                            <p style="font-size:20px; margin-top: 0; margin-bottom: 2vh;">Your Guess</p>
-                            <div style="width: 13vw; height: 13vw; border-radius: 50%; background-color: ${guessedRgb};"></div>
-                        </div>
-                        <div style="margin-bottom: 10px">
-                            <p style="margin-bottom: 10px; font-size: 18px">Your Confidence Level</p>
-                            <div class="star-rating" style="margin-left: 1vw; margin-left: ${margin_star}px;">
-                                <span data-value="10" class="star">★</span>
-                                <span data-value="9" class="star">★</span>
-                                <span data-value="8" class="star">★</span>
-                                <span data-value="7" class="star">★</span>
-                                <span data-value="6" class="star">★</span>
-                                <span data-value="5" class="star">★</span>
-                                <span data-value="4" class="star">★</span>
-                                <span data-value="3" class="star">★</span>
-                                <span data-value="2" class="star">★</span>
-                                <span data-value="1" class="star">★</span>
+            <div style='display: flex; justify-content: space-around; margin: 2.76% 3vw 0 3vw; height: 90%'>
+                <div style='text-align: center; height: 50vh;'>
+                    <div style="margin-right: 5vw; width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${img};"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 0vw 2vw 0vw 2vw; width: 40%; height: 50vh">
+                            <div style = "height: 100%">
+                                <div style="width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: ${guessedRgb};"></div>
                             </div>
-                            <input type="hidden" name="rating" id="rating" value="">
-                        </div>
-                        <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT" style="margin-right: 1vw"></input>
+                </div>
             </div>
-        </div>
+            <div style="height: 6vh; display: flex; justify-content: center; align-items: center;">
+                <div style="margin-bottom: 5px; ">
+                    <div class="star-rating" style="width: ${criterion * 2}vw; margin-right: 1vw">
+                    ${starcode}
+                    </div>
+                    <input type="hidden" name="rating" id="rating" value="">
+                </div>
+            </div>
+            <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT" style="margin-right: 1vw"></input>
 
         `;
     },
@@ -285,7 +301,6 @@ var result = {
         evaluation: 'evaluation'
     },
     on_load: function() {
-        showStars(criterion)
         const stars = document.querySelectorAll('.star-rating .star');
         const ratingInput = document.getElementById('rating');
 

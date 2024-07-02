@@ -315,7 +315,8 @@
 .jspsych-display-element {
   display: flex;
   flex-direction: column;
-  overflow-y: auto; 
+  overflow-y: hidden; 
+  overflow-x: hidden; 
 }
 
 .jspsych-display-element:focus {
@@ -325,7 +326,7 @@
 .jspsych-content-wrapper {
   display: flex;
   /* display: inline-block; */
-  margin: 5% 5% 5% 5%;
+  margin: 3% 5% 3% 5%;
   flex: 1 1 100%;
   flex-wrap: wrap;
   /* alig */
@@ -572,7 +573,7 @@
   display: inline-flex;
   font-size: 2rem;
   justify-content: space-evenly;
-  width: 60%
+  /* width: 60% */
 }
 
 .star-rating span{
@@ -583,7 +584,7 @@
 
 .star-rating span:hover,
 .star-rating span:hover ~ span {
-  color: rgb(252, 224, 110);
+  color: rgb(255, 217, 63);
 }
 
 .star-rating .selected,
@@ -591,6 +592,25 @@
   color: #fc0;
 }
 
+.star-rating .disabled,
+.star-rating .disabled ~ span {
+  color: rgb(86, 86, 86);
+}
+
 .star.hidden {
   visibility: hidden;
+}
+
+.nonstar{
+  direction: ltr;
+  font-size: 15px; 
+  color: #7d7d7d;
+  background-color: rgb(255, 255, 255);
+  border-radius: 4px;
+  margin-right: 10px;
+  border: 1px solid;
+}
+
+.nonstar:hover{
+  background-color: rgb(255, 217, 63);
 }

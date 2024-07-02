@@ -1,8 +1,14 @@
 function validate() {
     // r = parseInt(document.forms["survey-html"]["r"].value)
     rating = parseInt(document.forms["survey-html"]["rating"].value)
+    ratingconf = parseInt(document.forms["survey-html"]["rating-conf"].value)
     if  (isNaN(rating)){
-        alert('Please select at least one star.');
+        alert('Please select at least one option for the rating.');
+        return false;
+    }
+
+    if  (isNaN(ratingconf)){
+        alert('Please select at least one star for the confidence rating.');
         return false;
     }
 
