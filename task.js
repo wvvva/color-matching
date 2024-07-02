@@ -139,7 +139,6 @@ var rgbTask = {
         for (let i = criterion; i > 0; i--){
             starcode += `<span data-value="${i}" class="star">★</span>`
         }
-        console.log(starcode);
         return `
         <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw; height: 90%'>
             <div style='text-align: center; height: 50vh;'>
