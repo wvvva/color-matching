@@ -180,7 +180,7 @@ var rgbTask = {
             </div>
             <div style="justify-content: center; flex-direction: column; ">
                 <div style="height:18vh">
-                    <div class="star-rating" style="width: ${criterion * 2}vw;">
+                    <div class="star-rating" style="">
                         ${starcode}
                         <div class="stop-sign"></div>
                     </div>
@@ -265,7 +265,7 @@ var result = {
                 </div>
             </div>
             <div style="height: 18vh;">
-                    <div class="star-rating" style="width: ${criterion * 2}vw">
+                    <div class="star-rating" style="">
                         ${starcode}
                         <div class="stop-sign"></div>
                     </div>
