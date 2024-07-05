@@ -1,11 +1,11 @@
 function validate() {
-    if(document.forms["survey-html"]["rating-conf"]){
-        ratingconf = parseInt(document.forms["survey-html"]["rating-conf"].value)
-        if  (isNaN(ratingconf)){
-            alert('Please select at least one star for the confidence rating.');
-            return false;
-        }
-    }
+    // if(document.forms["survey-html"]["rating-conf"]){
+    //     ratingconf = parseInt(document.forms["survey-html"]["rating-conf"].value)
+    //     if  (isNaN(ratingconf)){
+    //         alert('Please select at least one star for the confidence rating.');
+    //         return false;
+    //     }
+    // }
     // r = parseInt(document.forms["survey-html"]["r"].value)
     rating = parseInt(document.forms["survey-html"]["rating"].value)
 

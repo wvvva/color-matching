@@ -601,16 +601,20 @@
   visibility: hidden;
 }
 
-.nonstar{
-  direction: ltr;
-  font-size: 15px; 
-  color: #7d7d7d;
-  background-color: rgb(255, 255, 255);
-  border-radius: 4px;
-  margin-right: 10px;
-  border: 1px solid;
+.stop-sign {
+  background-image: url('../img/stop_sign_grey.png');
+  width: 2.1vw;
+  height: 2.1vw;
+  margin-right: 5px;
+  display: inline-block;
+  background-size: cover;
+  transition: background-image 0.3s ease;
 }
 
-.nonstar:hover{
-  background-color: rgb(255, 217, 63);
+.stop-sign:hover {
+  background-image: url('../img/stop_sign_hover.png');
+}
+
+.stop-sign.selected {
+  background-image: url('../img/stop_sign_selected.png');
 }
