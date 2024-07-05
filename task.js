@@ -291,7 +291,18 @@ var result = {
                 
                 star.classList.add('selected');
                 evaluation = ratingInput.value;
+                document.querySelector('.star-rating .stop-sign').classList.remove('selected');
             });
+        });
+
+        document.querySelector('.star-rating .stop-sign').addEventListener('click', () => {
+            ratingInput.value = 0;
+            
+            document.querySelector('.star-rating .stop-sign').classList.remove('selected');
+            document.querySelector('.star-rating .stop-sign').classList.add('selected');
+            stars.forEach(s => s.classList.remove('selected'));
+
+            evaluation = ratingInput.value;
         });
     },
     on_finish: function(data){
