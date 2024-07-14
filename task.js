@@ -130,6 +130,108 @@ function rgb2lab(rgb){
     return i < 0 ? 0 : 100 - Math.sqrt(i);
   }
 
+var testrgb = {
+    type: jsPsychSurveyHtmlForm,
+    html: function(){
+        // var starcode = ''
+        // for (let i = criterion; i > 0; i--){
+        //     starcode += `<span data-value="${i}" class="star">★</span>`
+        // }
+        return `
+        <div style="justify-content: center; display: flex; flex-direction: column">
+            <div style='display: flex; justify-content: space-around; margin: 0 3vw 0 3vw'>
+                <div style='justify-content: center; display: flex; width: 50%'>
+                    <div id="color-circle" style="width: 35vw; max-width: 400px; height: 35vw; max-height: 400px; border-radius: 50%; background-color: black;"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-around; margin: 0vw 2vw 0vw 2vw; width: 50%; height: 50vh">
+                    <div style="display: flex;">
+                        <img src="img/red.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                        <div style="width: 15vw; display: flex; flex-direction: column;">
+                            <input type="range" min="0" max="255" value="0" name="r" class="slider"/>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 15px;">0</span>
+                                <span style="font-size: 15px;">MAX</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="img/green.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                        <div style="width: 15vw; display: flex; flex-direction: column;">
+                            <input type="range" min="0" max="255" value="0" class="slider" name="g"/>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 15px;">0</span>
+                                <span style="font-size: 15px;">MAX</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="img/blue1.png" style="width: 40px; height: 40px; margin-right: 2vw">
+                        <div style="width: 15vw; display: flex; flex-direction: column;">
+                            <input type="range" min="0" max="255" value="0" class="slider" name="b"/>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 15px;">0</span>
+                                <span style="font-size: 15px;">MAX</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="justify-content: center; flex-direction: column; ">
+                <div style="height:20vh">
+                    <div style="height:7vh"></div>
+                    <p style="margin: 0px 0 0 0; font-size: 30px; align-self: center; flex-direction: column">Try It Out !!! </p>
+                </div>
+                <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="CONTINUE" style="margin-right: 1vw"></input>
+            </div>
+        </div>
+        `;
+    },
+    on_load: function() {
+        const colorCircle = document.getElementById('color-circle');
+        const redSlider = document.querySelector('input[name="r"]');
+        const greenSlider = document.querySelector('input[name="g"]');
+        const blueSlider = document.querySelector('input[name="b"]');
+
+        function updateColor() {
+            const r = redSlider.value;
+            const g = greenSlider.value;
+            const b = blueSlider.value;
+            const rgb = `rgb(${r}, ${g}, ${b})`;
+            colorCircle.style.backgroundColor = rgb;
+        }
+
+        redSlider.addEventListener('input', updateColor);
+        greenSlider.addEventListener('input', updateColor);
+        blueSlider.addEventListener('input', updateColor);
+
+        // const stars = document.querySelectorAll('.star-rating .star');
+        // const ratingInput = document.getElementById('rating');
+
+        // stars.forEach(star => {
+        //     star.addEventListener('click', () => {
+        //         const value = star.getAttribute('data-value');
+        //         ratingInput.value = value;
+                
+        //         stars.forEach(s => s.classList.remove('selected'));
+                
+        //         star.classList.add('selected');
+        //         prediction = ratingInput.value;
+        //         document.querySelector('.star-rating .stop-sign').classList.remove('selected');
+        //     });
+        // });
+
+        // document.querySelector('.star-rating .stop-sign').addEventListener('click', () => {
+        //     ratingInput.value = 0;
+            
+        //     document.querySelector('.star-rating .stop-sign').classList.remove('selected');
+        //     document.querySelector('.star-rating .stop-sign').classList.add('selected');
+        //     stars.forEach(s => s.classList.remove('selected'));
+
+        //     prediction = ratingInput.value;
+        // });
+    }
+};
+
 // rgb task: guess rgb values
 var rgbTask = {
     type: jsPsychSurveyHtmlForm,
@@ -179,20 +281,21 @@ var rgbTask = {
                 </div>
             </div>
             <div style="justify-content: center; flex-direction: column; ">
-                <div style="height:18vh">
+                <div style="height:20vh">
+                    <p style="margin: 0 0 5px 0; font-size: 15px; align-self: center; flex-direction: column">Rate Your Performance</p>
                     <div class="star-rating" style="">
                         ${starcode}
                         <div class="stop-sign"></div>
                     </div>
                     <input type="hidden" name="rating" id="rating" value="">
-                    <p style="margin-bottom: 10px; font-size: 18px">Your Confidence Level</p>
+                    <p style="margin: 20px 0 0px 0; font-size: 15px">Your Confidence Level</p>
                     <input type="range" name="conf" class="slider" min="0" max="7" value="0" step="1">
-                    <div style="width: 18%; display: flex; justify-content: space-between; margin-left: 41%">
-                        <span style="font-size: 15px;">0</span>
-                        <span style="font-size: 15px;">MAX</span>
+                    <div style="width: 18%; display: flex; justify-content: space-between; margin: 0 0 0 41%;">
+                        <span style="font-size: 13px;">0</span>
+                        <span style="font-size: 13px;">MAX</span>
                     </div>
                 </div>
-                <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="SUBMIT" style="margin-right: 1vw"></input>
+                <input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="CONTINUE" style="margin-right: 1vw"></input>
             </div>
         </div>
         `;
@@ -264,7 +367,8 @@ var result = {
                             </div>
                 </div>
             </div>
-            <div style="height: 18vh;">
+            <div style="height: 20vh;">
+                    <p style="margin: 0 0 5px 0; font-size: 15px">Rate Your Performance</p>
                     <div class="star-rating" style="">
                         ${starcode}
                         <div class="stop-sign"></div>
@@ -353,6 +457,7 @@ var test_procedure = {
     randomize_order: true
 }
 
+timeline.push(testrgb);
 timeline.push(test_procedure);
 timeline.push(end);
 

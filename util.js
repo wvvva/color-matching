@@ -7,13 +7,15 @@ function validate() {
     //     }
     // }
     // r = parseInt(document.forms["survey-html"]["r"].value)
-    rating = parseInt(document.forms["survey-html"]["rating"].value)
 
-    if  (isNaN(rating)){
-        alert('Please select at least one option for the rating.');
-        return false;
+    if(document.forms["survey-html"]["rating"]){
+        rating = parseInt(document.forms["survey-html"]["rating"].value)
+
+        if  (isNaN(rating)){
+            alert('Please select at least one option for the rating.');
+            return false;
+        }
     }
-
     // if (isNaN(r) || /[^\d]/.test(document.forms["survey-html"]["r"].value) || r > 255 || r < 0){
     //     alert('Please enter a valid integer between 0 and 255 for R value.');
     //     return false;
