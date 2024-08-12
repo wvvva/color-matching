@@ -46,7 +46,9 @@ for(let i = 0; i < start_stimuli.length; i++){
     }
 }
 
-const jsPsych = initJsPsych();
+const jsPsych = initJsPsych({
+    on_finish: function(){ console.log("done"); }
+ });
 
 const subject_id = jsPsych.randomization.randomID(10);
 const filename = `${subject_id}.csv`;
@@ -306,6 +308,9 @@ var rgbTask = {
     },
     data: {
         task: 'response',
+        r: 'r',
+        g: 'g', 
+        b: 'b',
         similarity: 'similarity',
         prediction: 'prediction',
         confidence: 'confidence',
@@ -341,6 +346,10 @@ var rgbTask = {
         guessedRgb = data.response;
         guessedRgb = `rgb(${guessedRgb.r}, ${guessedRgb.g}, ${guessedRgb.b})`;
         colorSim = colorSimilarity(jsPsych.timelineVariable('rgb'), guessedRgb);
+        data.r = data.response.r
+        data.g = data.response.g
+        data.b = data.response.b
+
         data.similarity = colorSim;
         data.prediction = prediction;
         data.confidence = data.response.conf;
@@ -415,7 +424,7 @@ var result = {
     },
     on_finish: function(data){
         data.evaluation = evaluation;
-        console.log(data);
+        // console.log(data);
     }
 };
 
@@ -437,7 +446,7 @@ var criterion_trial = {
 var criterion_node = {
     timeline: [criterion_trial],
     conditional_function: function(){
-        if(trail % criterion_change == 0){
+        if(trail % criterion_change == 0 && trail != test_stimuli.length){
             return true;
         } else {
             return false;
@@ -471,8 +480,8 @@ const save_data = {
 
 timeline.push(testrgb);
 timeline.push(test_procedure);
-timeline.push(end);
 timeline.push(save_data);
+timeline.push(end);
 
 jsPsych.run(timeline);
 
