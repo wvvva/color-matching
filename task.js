@@ -8,8 +8,6 @@ var stimulus = 5;
 var criterion_change = 5;
 var criterion = 2;
 
-
-
 var timeline = [];
 var trail = 0;
 var guessedRgb;
@@ -17,19 +15,22 @@ var colorSim;
 var prediction;
 var confidence;
 var evaluation;
+// var start_stimuli = [
+//     'rgb(227, 66, 52)',
+//     'rgb(255, 192, 0)',
+//     'rgb(192, 255, 0)',
+//     'rgb(63, 255, 0)',
+//     'rgb(0, 255, 64)',
+//     'rgb(127, 255, 212)',
+//     'rgb(0, 192, 255)',
+//     'rgb(0, 64, 255)',
+//     'rgb(106, 93, 255)',
+//     'rgb(128, 0, 128)',
+//     'rgb(222, 49, 99)',
+//     'rgb(220, 20, 60)',
+// ];
 var start_stimuli = [
     'rgb(227, 66, 52)',
-    'rgb(255, 192, 0)',
-    'rgb(192, 255, 0)',
-    'rgb(63, 255, 0)',
-    'rgb(0, 255, 64)',
-    'rgb(127, 255, 212)',
-    'rgb(0, 192, 255)',
-    'rgb(0, 64, 255)',
-    'rgb(106, 93, 255)',
-    'rgb(128, 0, 128)',
-    'rgb(222, 49, 99)',
-    'rgb(220, 20, 60)',
 ];
 
 var test_stimuli = [
@@ -46,6 +47,9 @@ for(let i = 0; i < start_stimuli.length; i++){
 }
 
 const jsPsych = initJsPsych();
+
+const subject_id = jsPsych.randomization.randomID(10);
+const filename = `${subject_id}.csv`;
 
 // Changed from https://github.com/antimatter15/rgb-lab/blob/master/color.js
 function rgb2lab(rgb){
@@ -457,8 +461,19 @@ var test_procedure = {
     randomize_order: true
 }
 
+const save_data = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "VOHpPsMix18m",
+    filename: filename,
+    data_string: ()=>jsPsych.data.get().csv()
+  };
+
 timeline.push(testrgb);
 timeline.push(test_procedure);
 timeline.push(end);
+timeline.push(save_data);
 
 jsPsych.run(timeline);
+
+
