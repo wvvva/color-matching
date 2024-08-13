@@ -353,7 +353,7 @@ var rgbTask = {
         data.similarity = colorSim;
         data.prediction = prediction;
         data.confidence = data.response.conf;
-        console.log(data);
+        // console.log(data);
         trail = trail + 1;
     }
 };
